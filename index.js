@@ -51,6 +51,7 @@ app.post('/timelogdetail', (req, res) => {
 
 // Endpoint to capture time log
 app.post('/timelog', async (req, res) => {
+    let errorLogs = [];
     try {
         const { username, password, userAgent, wishType } = req.body;
 
@@ -65,7 +66,7 @@ app.post('/timelog', async (req, res) => {
         let now = new Date();
         const month = now.getMonth() + 1;
         const year = now.getFullYear();
-        let errorLogs = [];
+        
         const errorFileName = `error_${year}_${month}.json`;
         const errorFilePath = path.join(__dirname, errorFileName);
 
