@@ -127,7 +127,7 @@ app.post('/timelog', async (req, res) => {
 
 
         // Concatenate the formatted date and time
-        const formattedDateTime = `${formattedDate} ${formattedTime}`;
+       // const formattedDateTime = `${formattedDate} ${formattedTime}`;
 
         if (wishType == 'Evening') {
             // If an entry already exists for the current date, set the end date
