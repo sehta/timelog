@@ -1,11 +1,38 @@
 [
-    {
-      "name": "John Doe",
-      "password": "password123"
-    },
-    {
-      "name": "Jane Smith",
-      "password": "pass456"
-    }
-  ]
-  
+  {
+    "name": "Sarmistha",
+    "password": "palm123"
+  },
+  {
+    "name": "Reena",
+    "password": "crlf123"
+  },
+  {
+    "name": "Amandeep",
+    "password": "nuts345"
+  },
+  {
+    "name": "Sumanjeet",
+    "password": "cycle989"
+  },
+  {
+    "name": "Priya",
+    "password": "color765"
+  },
+  {
+    "name": "Navjot",
+    "password": "branch666"
+  },
+  {
+    "name": "Radha",
+    "password": "push243"
+  },
+  {
+    "name": "ManpreetK",
+    "password": "eyes659"
+  },
+  {
+    "name": "ManpreetJ",
+    "password": "order989"
+  }
+]
