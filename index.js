@@ -83,19 +83,26 @@ app.post('/timelog', async (req, res) => {
         now.setUTCMinutes(now.getUTCMinutes() + 30); // Add 30 minutes
 
         // Format the adjusted date in dd-mm-yy HH:mm format
-        const formattedDate = now.toLocaleString('en-IN', {
+        const formattedDate = now.toLocaleDateString('en-IN', {
             day: '2-digit',
             month: '2-digit',
             year: '2-digit',
+          });
+          
+          const formattedTime = now.toLocaleTimeString('en-IN', {
             hour: '2-digit',
             minute: '2-digit',
-        });
+          });
+          
+          // Concatenate the formatted date and time
+          const formattedDateTime = `${formattedDate} ${formattedTime}`;
+          
         if (wishType == 'Evening') {
             // If an entry already exists for the current date, set the end date
-            timeLog.endDate = formattedDate;
+            timeLog.endDate = formattedDateTime;
         } else {
             // If no entry exists for the current date, create a new entry with the start date
-            timeLog.startDate = formattedDate;
+            timeLog.startDate = formattedDateTime;
 
         }
         timeLogs.push(timeLog);
