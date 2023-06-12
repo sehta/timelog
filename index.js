@@ -16,6 +16,39 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.post('/timelogdetail', (req, res) => {
+    try {
+        const { username , password} = req.body;
+         // Verify employee details from the employees.json file
+         const employeesFilePath = path.join(__dirname, 'employees.json');
+         const employeesData = fs.readFileSync(employeesFilePath, 'utf8');
+         const employees = JSON.parse(employeesData);
+        const employee = employees.find(emp => emp.name === username && emp.password === password);
+        if (!employee) {
+            res.status(401).json({error:'Invalid employee credentials'});
+            return;
+        }
+        let now = new Date();
+        const month = now.getMonth() + 1;
+        const year = now.getFullYear();
+        const filename = `timelogs_${year}_${month}.json`;
+        const filePath = path.join(__dirname, filename);
+        let timeLogs = [];
+        if (fs.existsSync(filePath)) {
+            const fileContent = fs.readFileSync(filePath, 'utf8');
+            timeLogs = JSON.parse(fileContent);
+        } else {
+            fs.writeFileSync(filePath, JSON.stringify(timeLogs));
+        }
+        const empLogs = timeLogs.filter(emp => emp.username === username);
+        res.json(empLogs);
+    }
+    catch (error) {
+        console.error('Error capturing timelogdetail:', error);
+        res.sendStatus(500);
+    }
+});
+
 // Endpoint to capture time log
 app.post('/timelog', async (req, res) => {
     try {
@@ -127,7 +160,7 @@ app.post('/timelog', async (req, res) => {
 
 
         // Concatenate the formatted date and time
-       // const formattedDateTime = `${formattedDate} ${formattedTime}`;
+        // const formattedDateTime = `${formattedDate} ${formattedTime}`;
 
         if (wishType == 'Evening') {
             // If an entry already exists for the current date, set the end date

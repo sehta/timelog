@@ -15,7 +15,11 @@
       align-items: center;
       height: 100vh;
     }
-
+    .containert {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     img {
       max-width: 100%;
       max-height: 100%;
@@ -106,6 +110,32 @@
     .login-form input[type="submit"]:hover {
       background-color: #0056b3;
     }
+
+    table {
+  border-collapse: collapse;
+  width: 60%;
+  font-family: Arial, sans-serif;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #eaeaea;
+}
+
+
   </style>
 </head>
 
@@ -128,9 +158,94 @@
   </div>
   <div class="containeri">
     <img src="https://zenquotes.io/api/image" alt="Motivational Image">
+    
+  </div>
+  <div class="containert">
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Start Date</th>
+          <th>Start Time</th>
+          <th>End Date</th>
+          <th>End Time</th>
+          <th>Mins</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
   </div>
 
   <script>
+
+    function getTimeLogs() {
+      var userName = document.getElementById('username').value.trim();
+      var password = document.getElementById('password').value.trim();
+      if (userName && password) {
+
+        fetch('/timelogdetail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: userName,
+            password: password
+          })
+        })
+          .then(async response => {
+            var data = await response.json();
+            if (response.ok) {
+              console.log("response", data);
+              const tbody = document.getElementById('table-body');
+              tbody.innerText='';
+              for (let i = 0; i < data.length; i++) {
+                console.log(data[i]);
+               
+                // Create a new row
+                const newRow = document.createElement('tr');
+
+                // Create cells and set their content
+                const cell1 = document.createElement('td');
+                cell1.textContent = data[i].wishType;
+
+                const cell2 = document.createElement('td');
+                cell2.textContent = data[i].startDate;
+
+                const cell3 = document.createElement('td');
+                cell3.textContent = data[i].startTime;
+
+                const cell4 = document.createElement('td');
+                cell4.textContent = data[i].endDate;
+
+                const cell5 = document.createElement('td');
+                cell5.textContent = data[i].endTime;
+                
+                const cell6 = document.createElement('td');
+                cell6.textContent = data[i].mins;
+
+                // Append cells to the row
+                newRow.appendChild(cell1);
+                newRow.appendChild(cell2);
+                newRow.appendChild(cell3);
+                newRow.appendChild(cell4);
+                newRow.appendChild(cell5);
+                newRow.appendChild(cell6);
+                // Append the row to the tbody
+                tbody.appendChild(newRow);
+              }
+
+            }
+            else {
+              alert(data.error);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.log('Error capturing time log:', error);
+          });
+      }
+    }
 
 
     function captureTimeLog(wishType) {
@@ -142,7 +257,7 @@
         alert("Enter Username and password");
         return false;
       }
-
+      getTimeLogs();
       fetch('/timelog', {
         method: 'POST',
         headers: {
@@ -156,7 +271,7 @@
         })
       })
         .then(async response => {
-          
+
           if (response.ok) {
             element.innerText = 'Welcome.., Time log captured successfully!';
             localStorage.setItem('ok-' + new Date().getTime(), 'Oops..., Failed to capture time log!');
@@ -169,7 +284,7 @@
           }
         })
         .catch(error => {
-          console.log("error",error)
+          console.log("error", error)
           element.innerText = 'Oops..., Error capturing time log!';
           localStorage.setItem('catch-' + new Date().getTime(), error.message);
           console.log('Error capturing time log:', error);
