@@ -1,3 +1,28 @@
 [
-  
+  {
+    "username": "Reena",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "isMobile": false,
+    "startDate": "12/06/23",
+    "startTime": "02:57 pm",
+    "endDate": null,
+    "endTime": null,
+    "wishType": "Morning",
+    "sTime": "2023-06-12T14:57:34.716Z",
+    "eTime": null,
+    "mins": 0
+  },
+  {
+    "username": "Reena",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "isMobile": false,
+    "startDate": null,
+    "startTime": null,
+    "endDate": "12/06/23",
+    "endTime": "05:58 pm",
+    "wishType": "Evening",
+    "sTime": null,
+    "eTime": "2023-06-12T17:58:56.953Z",
+    "mins": 181
+  }
 ]

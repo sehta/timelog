@@ -57,8 +57,13 @@ app.post('/timelog', async (req, res) => {
             userAgent,
             isMobile: userAgent ? userAgent.includes('Mobile') : false,
             startDate: null,
+            startTime: null,
             endDate: null,
-            wishType
+            endTime: null,
+            wishType,
+            sTime: null,
+            eTime: null,
+            mins: 0
         };
 
 
@@ -76,33 +81,74 @@ app.post('/timelog', async (req, res) => {
         } else {
             fs.writeFileSync(filePath, JSON.stringify(timeLogs));
         }
-
-        
-        // Adjust the date to Kolkata time
-        now.setUTCHours(now.getUTCHours() + 5); // Add 5 hours
-        now.setUTCMinutes(now.getUTCMinutes() + 30); // Add 30 minutes
-
         // Format the adjusted date in dd-mm-yy HH:mm format
         const formattedDate = now.toLocaleDateString('en-IN', {
             day: '2-digit',
             month: '2-digit',
             year: '2-digit',
-          });
-          
-          const formattedTime = now.toLocaleTimeString('en-IN', {
+        });
+
+        const formattedTime = now.toLocaleTimeString('en-IN', {
             hour: '2-digit',
             minute: '2-digit',
-          });
-          
-          // Concatenate the formatted date and time
-          const formattedDateTime = `${formattedDate} ${formattedTime}`;
-          
+        });
+
+        // Adjust the date to Kolkata time
+        now.setUTCHours(now.getUTCHours() + 5); // Add 5 hours
+        now.setUTCMinutes(now.getUTCMinutes() + 30); // Add 30 minutes
+
+
+
+
+        // Check if already an entry for start today for same user
+        const startDateExist = timeLogs.find(emp => emp.wishType == 'Morning' && emp.username === username && emp.startDate == formattedDate);
+        if (wishType == 'Morning' && startDateExist) {
+            errorLogs.push({ isMobile: userAgent ? userAgent.includes('Mobile') : false, name: username, password: password, userAgent: userAgent, wishType: wishType, time: now, error: 'Invalid employee credentials' });
+            res.status(403).send('Error: You are already Clocked In for the day!');
+            return;
+        }
+
+
+        // Check if already an entry for end today for same user
+        const endDateExist = timeLogs.find(emp => emp.wishType == 'Evening' && emp.username === username && emp.endDate == formattedDate);
+        if (wishType == 'Evening' && endDateExist) {
+            errorLogs.push({ isMobile: userAgent ? userAgent.includes('Mobile') : false, name: username, password: password, userAgent: userAgent, wishType: wishType, time: now, error: 'Invalid employee credentials' });
+            res.status(403).send('Error: You are already Clocked Out for the day!');
+            return;
+        }
+        // If user tries to Good Evening with Good Morning
+        if (wishType == 'Evening' && !startDateExist) {
+            errorLogs.push({ isMobile: userAgent ? userAgent.includes('Mobile') : false, name: username, password: password, userAgent: userAgent, wishType: wishType, time: now, error: 'Invalid employee credentials' });
+            res.status(403).send('Error: Firstly, You need to ClockIn!');
+            return;
+        }
+
+
+
+
+        // Concatenate the formatted date and time
+        const formattedDateTime = `${formattedDate} ${formattedTime}`;
+
         if (wishType == 'Evening') {
             // If an entry already exists for the current date, set the end date
-            timeLog.endDate = formattedDateTime;
+            timeLog.endDate = formattedDate;
+            timeLog.endTime = formattedTime;
+            timeLog.eTime = now;
+            const date1 = new Date(startDateExist.sTime);
+            const date2 = new Date(now);
+
+            // Calculate the time difference in milliseconds
+            const timeDiff = date2 - date1;
+
+            // Convert milliseconds to minutes
+            const minutesDiff = Math.floor(timeDiff / 60000);
+            timeLog.mins = minutesDiff;
+
         } else {
             // If no entry exists for the current date, create a new entry with the start date
-            timeLog.startDate = formattedDateTime;
+            timeLog.startDate = formattedDate;
+            timeLog.startTime = formattedTime;
+            timeLog.sTime = now;
 
         }
         timeLogs.push(timeLog);

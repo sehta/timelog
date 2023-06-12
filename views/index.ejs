@@ -155,21 +155,24 @@
           password: password
         })
       })
-        .then(response => {
+        .then(async response => {
+          
           if (response.ok) {
             element.innerText = 'Welcome.., Time log captured successfully!';
             localStorage.setItem('ok-' + new Date().getTime(), 'Oops..., Failed to capture time log!');
             console.log('Time log captured successfully');
           } else {
-            element.innerText = 'Oops..., Failed to capture time log!';
-            localStorage.setItem('else-' + new Date().getTime(), 'Oops..., Failed to capture time log!');
-            console.error('Failed to capture time log');
+            const data = await response.text();
+            element.innerText = data;
+            localStorage.setItem('else-' + new Date().getTime(), data);
+            console.log(data);
           }
         })
         .catch(error => {
+          console.log("error",error)
           element.innerText = 'Oops..., Error capturing time log!';
           localStorage.setItem('catch-' + new Date().getTime(), error.message);
-          console.error('Error capturing time log:', error);
+          console.log('Error capturing time log:', error);
         });
     }
   </script>
