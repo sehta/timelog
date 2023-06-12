@@ -267,7 +267,7 @@ tr:hover {
         alert("Enter Username and password");
         return false;
       }
-      getTimeLogs();
+    
       fetch('/timelog', {
         method: 'POST',
         headers: {
@@ -286,12 +286,14 @@ tr:hover {
             element.innerText = 'Welcome.., Time log captured successfully!';
             localStorage.setItem('ok-' + new Date().getTime(), 'Oops..., Failed to capture time log!');
             console.log('Time log captured successfully');
+            getTimeLogs();
           } else {
             const data = await response.text();
             element.innerText = data;
             localStorage.setItem('else-' + new Date().getTime(), data);
             console.log(data);
           }
+          
         })
         .catch(error => {
           console.log("error", error)
