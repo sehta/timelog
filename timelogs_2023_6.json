@@ -1,0 +1,24 @@
+[
+  {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "isMobile": false,
+    "startTime": "2023-06-12T04:47:15.761Z",
+    "endTime": null
+  },
+  {
+    "username": "John Doe",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "isMobile": false,
+    "startDate": "2023-06-12T08:35:58.751Z",
+    "endDate": null,
+    "wishType": "Morning"
+  },
+  {
+    "username": "John Doe",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "isMobile": false,
+    "startDate": null,
+    "endDate": "2023-06-12T08:36:21.903Z",
+    "wishType": "Evening"
+  }
+]
