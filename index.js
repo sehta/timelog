@@ -29,7 +29,7 @@ app.post('/timelog', async (req, res) => {
 
 
         // Get the current date in yyyy-mm-dd format
-        const now = new Date();
+        let now = new Date();
         const month = now.getMonth() + 1;
         const year = now.getFullYear();
         let errorLogs = [];
@@ -77,13 +77,25 @@ app.post('/timelog', async (req, res) => {
             fs.writeFileSync(filePath, JSON.stringify(timeLogs));
         }
 
+        
+        // Adjust the date to Kolkata time
+        now.setUTCHours(now.getUTCHours() + 5); // Add 5 hours
+        now.setUTCMinutes(now.getUTCMinutes() + 30); // Add 30 minutes
 
+        // Format the adjusted date in dd-mm-yy HH:mm format
+        const formattedDate = now.toLocaleString('en-IN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
         if (wishType == 'Evening') {
             // If an entry already exists for the current date, set the end date
-            timeLog.endDate = now.toISOString();
+            timeLog.endDate = formattedDate;
         } else {
             // If no entry exists for the current date, create a new entry with the start date
-            timeLog.startDate = now.toISOString();
+            timeLog.startDate = formattedDate;
 
         }
         timeLogs.push(timeLog);
