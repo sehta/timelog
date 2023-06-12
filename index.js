@@ -101,6 +101,7 @@ app.post('/timelog', async (req, res) => {
 });
 
 // Start the server
-app.listen(80, () => {
-    console.log('Server listening on port 80');
+var port = process.env.port || 8080;
+app.listen(port, () => {
+    console.log('Server listening on port '+ port);
 });
