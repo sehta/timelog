@@ -114,6 +114,11 @@ app.post('/timelog', async (req, res) => {
         } else {
             fs.writeFileSync(filePath, JSON.stringify(timeLogs));
         }
+
+        // Adjust the date to Kolkata time
+        now.setUTCHours(now.getUTCHours() + 5); // Add 5 hours
+        now.setUTCMinutes(now.getUTCMinutes() + 30); // Add 30 minutes
+
         // Format the adjusted date in dd-mm-yy HH:mm format
         const formattedDate = now.toLocaleDateString('en-IN', {
             day: '2-digit',
@@ -126,9 +131,7 @@ app.post('/timelog', async (req, res) => {
             minute: '2-digit',
         });
 
-        // Adjust the date to Kolkata time
-        now.setUTCHours(now.getUTCHours() + 5); // Add 5 hours
-        now.setUTCMinutes(now.getUTCMinutes() + 30); // Add 30 minutes
+        
 
 
 
