@@ -81,7 +81,7 @@
     }
 
     .login-form {
-      display: flex;
+
       flex-direction: column;
       align-items: center;
       gap: 16px;
@@ -113,7 +113,7 @@
 
     table {
   border-collapse: collapse;
-  width: 60%;
+  width: 100%;
   font-family: Arial, sans-serif;
 }
 
@@ -142,25 +142,26 @@ tr:hover {
 <body>
   <div class="containerh">
     <h1>Time Log</h1>
-
+<h4><span id="message"></span></h4>
   </div>
   <div class="login-container">
     <form class="login-form">
       <input type="text" id="username" placeholder="Username">
       <input type="password" id="password" placeholder="Password">
+      <button class="morning-button" onclick="captureTimeLog('Morning')">Login</button>
+     
     </form>
+    
   </div>
   <div class="container">
 
     <button class="morning-button" onclick="captureTimeLog('Morning')">Good Morning</button>
-    <span id="message"></span>
+    
     <button class="evening-button" onclick="captureTimeLog('Evening')">Good Evening</button>
   </div>
-  <div class="containeri">
-    <img src="https://zenquotes.io/api/image" alt="Motivational Image">
-    
-  </div>
-  <div class="containert">
+ 
+ 
+  <div class="containert" style="overflow: auto;max-height: 200px;margin-bottom: 20px;">
     <table>
       <thead>
         <tr>
@@ -175,12 +176,19 @@ tr:hover {
       <tbody id="table-body"></tbody>
     </table>
   </div>
-
+  <div class="containert"><h1>Today Motivational Quote</h1></div>
+  
+<div class="containeri">
+  
+    <img src="https://zenquotes.io/api/image" alt="Motivational Image">
+    
+  </div>
   <script>
 
     function getTimeLogs() {
       var userName = document.getElementById('username').value.trim();
       var password = document.getElementById('password').value.trim();
+      var element = document.getElementById('message');
       if (userName && password) {
 
         fetch('/timelogdetail', {
@@ -196,7 +204,7 @@ tr:hover {
           .then(async response => {
             var data = await response.json();
             if (response.ok) {
-              console.log("response", data);
+              element.innerText = 'Login successfully!';
               const tbody = document.getElementById('table-body');
               tbody.innerText='';
               for (let i = 0; i < data.length; i++) {
@@ -242,11 +250,11 @@ tr:hover {
             }
           })
           .catch(error => {
+            element.innerText = 'Error in login!';
             console.log('Error capturing time log:', error);
           });
       }
     }
-
 
     function captureTimeLog(wishType) {
       var element = document.getElementById('message');
@@ -290,6 +298,7 @@ tr:hover {
           console.log('Error capturing time log:', error);
         });
     }
+  
   </script>
 </body>
 
