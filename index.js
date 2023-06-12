@@ -63,7 +63,7 @@ app.post('/timelog', async (req, res) => {
 
 
         // Load existing time log entries or create a new file if it doesn't exist
-        
+
         const filename = `timelogs_${year}_${month}.json`;
         const filePath = path.join(__dirname, filename);
 
@@ -78,13 +78,13 @@ app.post('/timelog', async (req, res) => {
         }
 
 
-        if (wishType=='Evening') {
+        if (wishType == 'Evening') {
             // If an entry already exists for the current date, set the end date
             timeLog.endDate = now.toISOString();
         } else {
             // If no entry exists for the current date, create a new entry with the start date
             timeLog.startDate = now.toISOString();
-            
+
         }
         timeLogs.push(timeLog);
 
@@ -100,8 +100,22 @@ app.post('/timelog', async (req, res) => {
     }
 });
 
+
+app.get('/download/:filename', (req, res) => {
+    const filename = req.params.filename;
+    const filePath = `./${filename}.json`;
+
+    res.sendFile(filePath, { root: __dirname }, (err) => {
+        if (err) {
+            // Handle error if file sending fails
+            console.error(err);
+            res.status(404).send('File not found');
+        }
+    });
+});
+
 // Start the server
 var port = process.env.PORT || 8080;
 app.listen(port, () => {
-    console.log('Server listening on port '+ port);
+    console.log('Server listening on port ' + port);
 });
