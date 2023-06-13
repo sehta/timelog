@@ -147,7 +147,7 @@
         <h1>Time Log</h1>
         <h4><span id="message"></span></h4>
         <button class="evening-button" onclick="alert('Calling Umesh....')">Apply Leave</button>
-        <button class="morning-button" onclick="clear();">Logout</button>
+        <button class="morning-button" onclick="clearInfo()">Logout</button>
     </div>
 
     <div class="container">
@@ -180,7 +180,7 @@
         <img src="https://zenquotes.io/api/image" alt="Motivational Image">
     </div>
     <script>
-        function clear() {
+        function clearInfo() {
             localStorage.clear();
             window.location.href = '/';
         }
