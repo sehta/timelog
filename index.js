@@ -184,7 +184,7 @@ app.post('/timelog', async (req, res) => {
             // Convert milliseconds to minutes
             const minutesDiff = Math.floor(timeDiff / 60000);
             startDateExist.mins = minutesDiff;
-
+            startDateExist.wishType = 'Evening';
             
 
         } else {
