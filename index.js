@@ -35,7 +35,7 @@ app.post('/timelogdetail', (req, res) => {
         let now = new Date();
         const month = now.getMonth() + 1;
         const year = now.getFullYear();
-        const filename = `timelogs_${year}_${month}.json`;
+        const filename = `timelogs_${year}_${month}_1.json`;
         const filePath = path.join(__dirname, filename);
         let timeLogs = [];
         if (fs.existsSync(filePath)) {
@@ -107,7 +107,7 @@ app.post('/timelog', async (req, res) => {
 
         // Load existing time log entries or create a new file if it doesn't exist
 
-        const filename = `timelogs_${year}_${month}.json`;
+        const filename = `timelogs_${year}_${month}_1.json`;
         const filePath = path.join(__dirname, filename);
 
 
