@@ -172,9 +172,9 @@ app.post('/timelog', async (req, res) => {
 
         if (wishType == 'Evening') {
             // If an entry already exists for the current date, set the end date
-            timeLog.endDate = formattedDate;
-            timeLog.endTime = formattedTime;
-            timeLog.eTime = now;
+            startDateExist.endDate = formattedDate;
+            startDateExist.endTime = formattedTime;
+            startDateExist.eTime = now;
             const date1 = new Date(startDateExist.sTime);
             const date2 = new Date(now);
 
@@ -183,16 +183,18 @@ app.post('/timelog', async (req, res) => {
 
             // Convert milliseconds to minutes
             const minutesDiff = Math.floor(timeDiff / 60000);
-            timeLog.mins = minutesDiff;
+            startDateExist.mins = minutesDiff;
+
+            
 
         } else {
             // If no entry exists for the current date, create a new entry with the start date
             timeLog.startDate = formattedDate;
             timeLog.startTime = formattedTime;
             timeLog.sTime = now;
-
+            timeLogs.push(timeLog);
         }
-        timeLogs.push(timeLog);
+       
 
 
         // Save the time log entries to the JSON file
