@@ -38,4 +38,8 @@
     "name": "Dummy",
     "password": "dummy123"
   }
+  ,{
+    "name": "Dummy1",
+    "password": "dummy123"
+  }
 ]
