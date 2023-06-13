@@ -110,8 +110,6 @@ app.post('/timelog', async (req, res) => {
         const filename = `timelogs_${year}_${month}_1.json`;
         const filePath = path.join(__dirname, filename);
 
-
-
         let timeLogs = [];
         if (fs.existsSync(filePath)) {
             const fileContent = fs.readFileSync(filePath, 'utf8');
