@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Log</title>
+    <style>
+        .containerh {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .containeri {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .containert {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+        }
+
+        .morning-button {
+            padding: 10px 20px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #fff;
+            background-color: #ff9800;
+            /* Orange */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .evening-button {
+            padding: 10px 20px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #fff;
+            background-color: #3f51b5;
+            /* Indigo */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .morning-button:hover {
+            background-color: #f57c00;
+            /* Darker Orange */
+        }
+
+        .evening-button:hover {
+            background-color: #303f9f;
+            /* Darker Indigo */
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-form {
+
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f2f2f2;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .login-form input[type="submit"] {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #eaeaea;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="containerh">
+        <h1>Time Log</h1>
+        <h4><span id="message"></span></h4>
+    </div>
+
+    <div class="container">
+
+        <button class="morning-button" onclick="captureTimeLog('Morning')">Good Morning</button>
+
+        <button class="evening-button" onclick="captureTimeLog('Evening')">Good Evening</button>
+    </div>
+
+    <div class="containert" style="overflow: auto;max-height: 200px;margin-bottom: 20px;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Start Date</th>
+                    <th>Start Time</th>
+                    <th>End Date</th>
+                    <th>End Time</th>
+                    <th>Mins</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+    <div class="containert">
+        <h1>Today Motivational Quote</h1>
+    </div>
+
+    <div class="containeri">
+        <img src="https://zenquotes.io/api/image" alt="Motivational Image">
+    </div>
+    <script>
+        var userName = localStorage.getItem('un');
+        var password = localStorage.getItem('pw');
+        function getTimeLogs() {
+
+            var element = document.getElementById('message');
+            if (userName && password) {
+
+                fetch('/timelogdetail', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: userName,
+                        password: password
+                    })
+                })
+                    .then(async response => {
+                        var data = await response.json();
+                        if (response.ok) {
+                            const tbody = document.getElementById('table-body');
+                            tbody.innerText = '';
+                            for (let i = 0; i < data.length; i++) {
+                                // Create a new row
+                                const newRow = document.createElement('tr');
+
+                                // Create cells and set their content
+                                const cell1 = document.createElement('td');
+                                cell1.textContent = data[i].wishType;
+
+                                const cell2 = document.createElement('td');
+                                cell2.textContent = data[i].startDate;
+
+                                const cell3 = document.createElement('td');
+                                cell3.textContent = data[i].startTime;
+
+                                const cell4 = document.createElement('td');
+                                cell4.textContent = data[i].endDate;
+
+                                const cell5 = document.createElement('td');
+                                cell5.textContent = data[i].endTime;
+
+                                const cell6 = document.createElement('td');
+                                cell6.textContent = data[i].mins;
+
+                                // Append cells to the row
+                                newRow.appendChild(cell1);
+                                newRow.appendChild(cell2);
+                                newRow.appendChild(cell3);
+                                newRow.appendChild(cell4);
+                                newRow.appendChild(cell5);
+                                newRow.appendChild(cell6);
+                                // Append the row to the tbody
+                                tbody.appendChild(newRow);
+                            }
+
+                        }
+                        else {
+                            alert(data.error);
+                            return false;
+                        }
+                    })
+                    .catch(error => {
+                        element.innerText = 'Error in login!';
+                        console.log('Error capturing time log:', error);
+                    });
+            }
+            else {
+                window.location.href = '/';
+            }
+        }
+
+        getTimeLogs();
+
+        function captureTimeLog(wishType) {
+            var element = document.getElementById('message');
+
+
+            if (userName == '' || password == '') {
+                window.location.href = '/';
+                return false;
+            }
+
+            fetch('/timelog', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userAgent: navigator.userAgent,
+                    wishType: wishType,
+                    username: userName,
+                    password: password
+                })
+            })
+                .then(async response => {
+
+                    if (response.ok) {
+                        element.innerText = 'Welcome.., Time log captured successfully!';
+                        localStorage.setItem('ok-' + new Date().getTime(), 'Oops..., Failed to capture time log!');
+                        console.log('Time log captured successfully');
+                        getTimeLogs();
+                    } else {
+                        const data = await response.text();
+                        element.innerText = data;
+                        localStorage.setItem('else-' + new Date().getTime(), data);
+                        console.log(data);
+                    }
+
+                })
+                .catch(error => {
+                    console.log("error", error)
+                    element.innerText = 'Oops..., Error capturing time log!';
+                    localStorage.setItem('catch-' + new Date().getTime(), error.message);
+                    console.log('Error capturing time log:', error);
+                });
+        }
+
+
+    </script>
+</body>
+
+</html>

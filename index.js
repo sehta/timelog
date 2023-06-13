@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.get('/timeinfo', (req, res) => {
+    res.render('timeinfo');
+});
+
 app.post('/timelogdetail', (req, res) => {
     try {
         const { username , password} = req.body;
