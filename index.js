@@ -185,6 +185,7 @@ app.post('/timelog', async (req, res) => {
             const minutesDiff = Math.floor(timeDiff / 60000);
             startDateExist.mins = minutesDiff;
             startDateExist.wishType = 'Evening';
+            timeLog.status="Present";
             
 
         } else {
@@ -192,6 +193,7 @@ app.post('/timelog', async (req, res) => {
             timeLog.startDate = formattedDate;
             timeLog.startTime = formattedTime;
             timeLog.sTime = now;
+            timeLog.status="Present - PunchOut Missed";
             timeLogs.push(timeLog);
         }
        

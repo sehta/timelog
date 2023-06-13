@@ -146,6 +146,8 @@
     <div class="containerh">
         <h1>Time Log</h1>
         <h4><span id="message"></span></h4>
+        <button class="evening-button" onclick="alert('Calling Umesh....')">Apply Leave</button>
+        <button class="morning-button" onclick="clear();">Logout</button>
     </div>
 
     <div class="container">
@@ -178,6 +180,11 @@
         <img src="https://zenquotes.io/api/image" alt="Motivational Image">
     </div>
     <script>
+        function clear() {
+            localStorage.clear();
+            window.location.href = '/';
+        }
+
         var userName = localStorage.getItem('un');
         var password = localStorage.getItem('pw');
         function getTimeLogs() {
