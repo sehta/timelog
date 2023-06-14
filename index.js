@@ -24,16 +24,56 @@ app.get('/timeinfo', (req, res) => {
 app.get('/applyleave', (req, res) => {
     const statusMessage = req.query.message;
 
-  // Render the status page and pass the status message to the template
-  res.render('applyleave', { statusMessage });
-   // res.render('applyleave');
+    // Render the status page and pass the status message to the template
+    res.render('applyleave', { statusMessage });
+    // res.render('applyleave');
 });
 
 app.post('/apply-leave', (req, res) => {
-    console.log(req.body);
-    // res.sendStatus(200);
-    res.redirect(`/applyleave?message=Updated`);
-    // res.render('applyleave', { message: "Updated" });
+    try {
+        const {
+            employeeId,
+            leaveType,
+            startDate,
+            endDate,
+            days,
+            reason
+        } = req.body;
+
+        let now = new Date();
+        const month = now.getMonth() + 1;
+        const year = now.getFullYear();
+        const filename = `leave_${year}_${month}.json`;
+        const filePath = path.join(__dirname, filename);
+        let timeLogs = [];
+        if (fs.existsSync(filePath)) {
+            const fileContent = fs.readFileSync(filePath, 'utf8');
+            timeLogs = JSON.parse(fileContent);
+        } else {
+            fs.writeFileSync(filePath, JSON.stringify(timeLogs));
+        }
+        const timeLog = {
+            employeeId,
+            leaveType,
+            startDate,
+            endDate,
+            days,
+            reason
+        };
+
+        timeLogs.push(timeLog);
+
+        // Save the time log entries to the JSON file
+        fs.writeFileSync(filePath, JSON.stringify(timeLogs, null, 2));
+
+        // res.sendStatus(200);
+        res.redirect(`/applyleave?message=Leave has been applied successfully!`);
+        // res.render('applyleave', { message: "Updated" });
+    }
+    catch (error) {
+        console.error('Error capturing leave application:', error);
+        res.sendStatus(500);
+    }
 });
 
 app.post('/timelogdetail', (req, res) => {
@@ -199,7 +239,7 @@ app.post('/timelog', async (req, res) => {
             const minutesDiff = Math.floor(timeDiff / 60000);
             startDateExist.mins = minutesDiff;
             startDateExist.wishType = 'Evening';
-            timeLog.status = "Present";
+            startDateExist.status = "Present";
 
 
         } else {

@@ -1,0 +1,10 @@
+[
+  {
+    "employeeId": "Dummy",
+    "leaveType": "Casual",
+    "startDate": "2023-06-14",
+    "endDate": "2023-06-14",
+    "days": "0.5",
+    "reason": "Casual leave"
+  }
+]
