@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Log</title>
+    <title>Leave Log</title>
     <style>
         .containerh {
             text-align: center;
@@ -30,7 +30,7 @@
         }
 
         .container {
-            display: flex;
+            /* display: flex; */
             align-items: center;
             justify-content: space-between;
             margin-bottom: 20px;
@@ -139,59 +139,132 @@
         tr:hover {
             background-color: #eaeaea;
         }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        select option:first-child {
+            color: #888;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
     </style>
 </head>
 
 <body>
     <div class="containerh">
-        <h1>Time Log - <span id="displayName"></span></h1>
+        <h1>Leave Application - <span id="displayName"></span></h1>
+        <% if (statusMessage) { %>
+            <div class="status-message">
+              <%= statusMessage %>
+            </div>
+          <% } %>
         <h4><span id="message"></span></h4>
-        <button class="evening-button" onclick="applyleavePage();">Apply Leave</button>
+        <button class="evening-button" onclick="back()">Back</button>
         <button class="morning-button" onclick="clearInfo()">Logout</button>
     </div>
 
     <div class="container">
+        <form action="/apply-leave" method="POST">
+            <input type="hidden" id="employeeId" name="employeeId" />
+            <label for="leaveType">Leave Type:</label>
+            <select id="leaveType" name="leaveType" required>
+                <option value="" selected disabled>Select leave type</option>
+                <option value="Casual">Casual</option>
+                <option value="Sick">Sick</option>
+                <option value="Unpaid">Unpaid</option>
+            </select><br>
 
-        <button class="morning-button" onclick="captureTimeLog('Morning')">Good Morning</button>
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" required><br>
 
-        <button class="evening-button" onclick="captureTimeLog('Evening')">Good Evening</button>
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate" required><br>
+
+            <label for="days">Total Days of Leave:</label>
+            <input type="number" id="days" value="0.25" min="0.25" step="0.25" name="days" required><br>
+
+            <label for="reason">Reason:</label>
+            <textarea id="reason" name="reason" rows="3"></textarea><br>
+
+            <button class="evening-button" type="submit">Apply</button>
+            <button class="morning-button" type="reset">Cancel</button>
+        </form>
+
     </div>
 
-    <div class="containert" style="overflow: auto;max-height: 200px;margin-bottom: 20px;">
-        <table>
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Start Date</th>
-                    <th>Start Time</th>
-                    <th>End Date</th>
-                    <th>End Time</th>
-                    <th>Mins</th>
-                </tr>
-            </thead>
-            <tbody id="table-body"></tbody>
-        </table>
-    </div>
-    <div class="containert">
-        <h1>Today Motivational Quote</h1>
-    </div>
 
-    <div class="containeri">
-        <img src="https://zenquotes.io/api/image" alt="Motivational Image">
-    </div>
     <script>
+        function back() {
+            window.location.href = '/timeinfo';
+        }
+        function applyleave() {
 
-        function applyleavePage(){
-            window.location.href = '/applyleave';
         }
         function clearInfo() {
             localStorage.clear();
             window.location.href = '/';
         }
-        var displayName = document.getElementById('displayName');
+
         var userName = localStorage.getItem('un');
         var password = localStorage.getItem('pw');
-        displayName.innerText=userName;
+        var employeeId = document.getElementById('employeeId');
+        var displayName = document.getElementById('displayName');
+        displayName.innerText = userName;
+        employeeId.value = userName;
         function getTimeLogs() {
 
             var element = document.getElementById('message');
@@ -210,41 +283,6 @@
                     .then(async response => {
                         var data = await response.json();
                         if (response.ok) {
-                            const tbody = document.getElementById('table-body');
-                            tbody.innerText = '';
-                            for (let i = 0; i < data.length; i++) {
-                                // Create a new row
-                                const newRow = document.createElement('tr');
-
-                                // Create cells and set their content
-                                const cell1 = document.createElement('td');
-                                cell1.textContent = data[i].wishType;
-
-                                const cell2 = document.createElement('td');
-                                cell2.textContent = data[i].startDate;
-
-                                const cell3 = document.createElement('td');
-                                cell3.textContent = data[i].startTime;
-
-                                const cell4 = document.createElement('td');
-                                cell4.textContent = data[i].endDate;
-
-                                const cell5 = document.createElement('td');
-                                cell5.textContent = data[i].endTime;
-
-                                const cell6 = document.createElement('td');
-                                cell6.textContent = data[i].mins;
-
-                                // Append cells to the row
-                                newRow.appendChild(cell1);
-                                newRow.appendChild(cell2);
-                                newRow.appendChild(cell3);
-                                newRow.appendChild(cell4);
-                                newRow.appendChild(cell5);
-                                newRow.appendChild(cell6);
-                                // Append the row to the tbody
-                                tbody.appendChild(newRow);
-                            }
 
                         }
                         else {
@@ -263,50 +301,6 @@
         }
 
         getTimeLogs();
-
-        function captureTimeLog(wishType) {
-            var element = document.getElementById('message');
-
-
-            if (userName == '' || password == '') {
-                window.location.href = '/';
-                return false;
-            }
-
-            fetch('/timelog', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    userAgent: navigator.userAgent,
-                    wishType: wishType,
-                    username: userName,
-                    password: password
-                })
-            })
-                .then(async response => {
-
-                    if (response.ok) {
-                        element.innerText = 'Welcome.., Time log captured successfully!';
-                        localStorage.setItem('ok-' + new Date().getTime(), 'Oops..., Failed to capture time log!');
-                        console.log('Time log captured successfully');
-                        getTimeLogs();
-                    } else {
-                        const data = await response.text();
-                        element.innerText = data;
-                        localStorage.setItem('else-' + new Date().getTime(), data);
-                        console.log(data);
-                    }
-
-                })
-                .catch(error => {
-                    console.log("error", error)
-                    element.innerText = 'Oops..., Error capturing time log!';
-                    localStorage.setItem('catch-' + new Date().getTime(), error.message);
-                    console.log('Error capturing time log:', error);
-                });
-        }
 
 
     </script>

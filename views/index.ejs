@@ -144,7 +144,7 @@
 
 <body>
   <div class="containerh">
-    <h1>Time Log</h1>
+    <h1>Time Log - <span id="displayName"></span></h1>
     <h4><span id="message"></span></h4>
   </div>
   <div class="login-container">
@@ -163,6 +163,7 @@
       var userName = document.getElementById('username').value.trim();
       var password = document.getElementById('password').value.trim();
       var element = document.getElementById('message');
+      var displayName = document.getElementById('displayName');
       if (userName && password) {
 
         fetch('/timelogdetail', {
@@ -180,6 +181,7 @@
             if (response.ok) {
               localStorage.setItem('un', userName);
               localStorage.setItem('pw', password);
+              displayName.innerText=userName;
               element.innerText = 'Login successfully!';
               window.location.href = '/timeinfo';
             }

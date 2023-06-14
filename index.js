@@ -4,10 +4,11 @@ const path = require('path');
 
 // Create the Express app
 const app = express();
-
+const bodyParser = require('body-parser');
 // Middleware to parse request body as JSON
-app.use(express.json());
-
+// app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
 
@@ -20,16 +21,31 @@ app.get('/timeinfo', (req, res) => {
     res.render('timeinfo');
 });
 
+app.get('/applyleave', (req, res) => {
+    const statusMessage = req.query.message;
+
+  // Render the status page and pass the status message to the template
+  res.render('applyleave', { statusMessage });
+   // res.render('applyleave');
+});
+
+app.post('/apply-leave', (req, res) => {
+    console.log(req.body);
+    // res.sendStatus(200);
+    res.redirect(`/applyleave?message=Updated`);
+    // res.render('applyleave', { message: "Updated" });
+});
+
 app.post('/timelogdetail', (req, res) => {
     try {
-        const { username , password} = req.body;
-         // Verify employee details from the employees.json file
-         const employeesFilePath = path.join(__dirname, 'employees.json');
-         const employeesData = fs.readFileSync(employeesFilePath, 'utf8');
-         const employees = JSON.parse(employeesData);
+        const { username, password } = req.body;
+        // Verify employee details from the employees.json file
+        const employeesFilePath = path.join(__dirname, 'employees.json');
+        const employeesData = fs.readFileSync(employeesFilePath, 'utf8');
+        const employees = JSON.parse(employeesData);
         const employee = employees.find(emp => emp.name === username && emp.password === password);
         if (!employee) {
-            res.status(401).json({error:'Invalid employee credentials'});
+            res.status(401).json({ error: 'Invalid employee credentials' });
             return;
         }
         let now = new Date();
@@ -70,7 +86,7 @@ app.post('/timelog', async (req, res) => {
         let now = new Date();
         const month = now.getMonth() + 1;
         const year = now.getFullYear();
-        
+
         const errorFileName = `error_${year}_${month}.json`;
         const errorFilePath = path.join(__dirname, errorFileName);
 
@@ -134,7 +150,7 @@ app.post('/timelog', async (req, res) => {
             minute: '2-digit',
         });
 
-        
+
 
 
 
@@ -183,18 +199,18 @@ app.post('/timelog', async (req, res) => {
             const minutesDiff = Math.floor(timeDiff / 60000);
             startDateExist.mins = minutesDiff;
             startDateExist.wishType = 'Evening';
-            timeLog.status="Present";
-            
+            timeLog.status = "Present";
+
 
         } else {
             // If no entry exists for the current date, create a new entry with the start date
             timeLog.startDate = formattedDate;
             timeLog.startTime = formattedTime;
             timeLog.sTime = now;
-            timeLog.status="Present - PunchOut Missed";
+            timeLog.status = "Present - PunchOut Missed";
             timeLogs.push(timeLog);
         }
-       
+
 
 
         // Save the time log entries to the JSON file
