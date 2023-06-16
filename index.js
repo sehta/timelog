@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const cron = require('node-cron');
 // Schedule the cron job to run every day at 7:00 PM (19:00)
-const job = cron.schedule('23 15 * * 1-5', () => {
+const job = cron.schedule('0 19 * * 1-5', () => {
     // This function will be executed when the cron job runs
     console.log('Cron job running at 3:00 PM');
 
@@ -63,7 +63,7 @@ app.post('/apply-leave', (req, res) => {
         let now = new Date();
         const month = now.getMonth() + 1;
         const year = now.getFullYear();
-        const filename = `timelogs_${year}_${month}.json`;
+        const filename = `logs_${year}_${month}.json`;
         const filePath = path.join(__dirname, filename);
         let timeLogs = [];
         if (fs.existsSync(filePath)) {
@@ -130,7 +130,7 @@ app.post('/timelogdetail', (req, res) => {
         let now = new Date();
         const month = now.getMonth() + 1;
         const year = now.getFullYear();
-        const filename = `timelogs_${year}_${month}.json`;
+        const filename = `logs_${year}_${month}.json`;
         const filePath = path.join(__dirname, filename);
         let timeLogs = [];
         if (fs.existsSync(filePath)) {
@@ -162,7 +162,7 @@ app.get('/viewlogs', (req, res) => {
         month = now.getMonth() + 1;
     if (!year)
         year = now.getFullYear();
-    const filename = `timelogs_${year}_${month}.json`;
+    const filename = `logs_${year}_${month}.json`;
     const filePath = path.join(__dirname, filename);
     let timeLogs = [];
     if (fs.existsSync(filePath)) {
@@ -265,7 +265,7 @@ app.post('/timelog', async (req, res) => {
 
         // Load existing time log entries or create a new file if it doesn't exist
 
-        const filename = `timelogs_${year}_${month}.json`;
+        const filename = `logs_${year}_${month}.json`;
         const filePath = path.join(__dirname, filename);
 
         let timeLogs = [];
@@ -391,7 +391,7 @@ const addAbsentRow = () => {
 
     const month = now.getMonth() + 1;
     const year = now.getFullYear();
-    const filename = `timelogs_${year}_${month}.json`;
+    const filename = `logs_${year}_${month}.json`;
     const filePath = path.join(__dirname, filename);
 
     let timeLogs = [];
