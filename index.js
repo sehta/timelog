@@ -5,19 +5,13 @@ const cron = require('node-cron');
 // Schedule the cron job to run every day at 7:00 PM (19:00)
 const job = cron.schedule('0 19 * * 1-5', () => {
     // This function will be executed when the cron job runs
-    console.log('Cron job running at 3:00 PM');
-
+    console.log('Cron job running at 7:00 PM');
     // add absent row who actully didn't mark attendance or not apply for leave
     addAbsentRow();
-
-
 }, {
     scheduled: true,
     timezone: 'Asia/Kolkata' // Replace with your desired timezone
 });
-
-
-
 
 
 // Create the Express app
