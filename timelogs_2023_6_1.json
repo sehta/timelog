@@ -5,13 +5,13 @@
     "isMobile": false,
     "startDate": "15/06/23",
     "startTime": "09:12 am",
-    "endDate": null,
-    "endTime": null,
-    "wishType": "Morning",
+    "endDate": "15/06/23",
+    "endTime": "06:00 pm",
+    "wishType": "Evening",
     "sTime": "2023-06-15T09:12:12.129Z",
-    "eTime": null,
-    "mins": 0,
-    "status": "Present - PunchOut Missed"
+    "eTime": "2023-06-15T18:00:20.879Z",
+    "mins": 528,
+    "status": "Present"
   },
   {
     "username": "Sumanjeet",
@@ -19,13 +19,13 @@
     "isMobile": false,
     "startDate": "15/06/23",
     "startTime": "09:28 am",
-    "endDate": null,
-    "endTime": null,
-    "wishType": "Morning",
+    "endDate": "15/06/23",
+    "endTime": "06:00 pm",
+    "wishType": "Evening",
     "sTime": "2023-06-15T09:28:02.051Z",
-    "eTime": null,
-    "mins": 0,
-    "status": "Present - PunchOut Missed"
+    "eTime": "2023-06-15T18:00:28.842Z",
+    "mins": 512,
+    "status": "Present"
   },
   {
     "username": "Sarmistha",
@@ -33,13 +33,13 @@
     "isMobile": false,
     "startDate": "15/06/23",
     "startTime": "09:28 am",
-    "endDate": null,
-    "endTime": null,
-    "wishType": "Morning",
+    "endDate": "15/06/23",
+    "endTime": "06:01 pm",
+    "wishType": "Evening",
     "sTime": "2023-06-15T09:28:53.058Z",
-    "eTime": null,
-    "mins": 0,
-    "status": "Present - PunchOut Missed"
+    "eTime": "2023-06-15T18:01:01.666Z",
+    "mins": 512,
+    "status": "Present"
   },
   {
     "username": "ManpreetK",
@@ -47,13 +47,13 @@
     "isMobile": false,
     "startDate": "15/06/23",
     "startTime": "09:33 am",
-    "endDate": null,
-    "endTime": null,
-    "wishType": "Morning",
+    "endDate": "15/06/23",
+    "endTime": "06:00 pm",
+    "wishType": "Evening",
     "sTime": "2023-06-15T09:33:03.755Z",
-    "eTime": null,
-    "mins": 0,
-    "status": "Present - PunchOut Missed"
+    "eTime": "2023-06-15T18:00:19.423Z",
+    "mins": 507,
+    "status": "Present"
   },
   {
     "username": "Navjot",
@@ -61,13 +61,13 @@
     "isMobile": false,
     "startDate": "15/06/23",
     "startTime": "09:34 am",
-    "endDate": null,
-    "endTime": null,
-    "wishType": "Morning",
+    "endDate": "15/06/23",
+    "endTime": "06:00 pm",
+    "wishType": "Evening",
     "sTime": "2023-06-15T09:34:37.075Z",
-    "eTime": null,
-    "mins": 0,
-    "status": "Present - PunchOut Missed"
+    "eTime": "2023-06-15T18:00:12.650Z",
+    "mins": 505,
+    "status": "Present"
   },
   {
     "username": "Amandeep",
@@ -75,12 +75,26 @@
     "isMobile": false,
     "startDate": "15/06/23",
     "startTime": "09:54 am",
-    "endDate": null,
-    "endTime": null,
-    "wishType": "Morning",
+    "endDate": "15/06/23",
+    "endTime": "06:00 pm",
+    "wishType": "Evening",
     "sTime": "2023-06-15T09:54:06.220Z",
-    "eTime": null,
-    "mins": 0,
-    "status": "Present - PunchOut Missed"
+    "eTime": "2023-06-15T18:00:19.300Z",
+    "mins": 486,
+    "status": "Present"
+  },
+  {
+    "username": "Priya",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "isMobile": false,
+    "startDate": "15/06/23",
+    "startTime": "02:46 pm",
+    "endDate": "15/06/23",
+    "endTime": "06:00 pm",
+    "wishType": "Evening",
+    "sTime": "2023-06-15T14:46:39.485Z",
+    "eTime": "2023-06-15T18:00:05.918Z",
+    "mins": 193,
+    "status": "Present"
   }
 ]

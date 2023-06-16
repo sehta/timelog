@@ -6,5 +6,18 @@
     "endDate": "2023-06-14",
     "days": "0.5",
     "reason": "Casual leave"
+  },
+  {
+    "username": "Dummy",
+    "wishType": "Morning",
+    "mins": 0,
+    "leaveType": "Sick",
+    "startDate": "17/06/23",
+    "endDate": "17/06/23",
+    "sTime": "2023-06-16T08:48:07.687Z",
+    "eTime": "2023-06-16T08:48:07.687Z",
+    "days": "0.25",
+    "reason": "adasdasd",
+    "status": "Absent"
   }
 ]

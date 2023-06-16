@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Log</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+  
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  
+    .form {
+      margin-bottom: 20px;
+    }
+  
+    label {
+      display: inline-block;
+      width: 100px;
+      margin-right: 10px;
+    }
+  
+    input[type="text"],
+    select {
+      width: 170px;
+      padding: 5px;
+      margin-right: 10px;
+    }
+  
+    button[type="button"] {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+  
+    th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+  
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  
+    tr:hover {
+      background-color: #ddd;
+    }
+    .evening-button {
+            padding: 10px 20px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #fff;
+            background-color: #3f51b5;
+            /* Indigo */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .containerh {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+  </style>
+  
+</head>
+
+<body>
+  <div class="containerh">
+  <h1>Time Log - <span id="displayName"></span></h1>
+  <button class="evening-button" onclick="back()">Back</button>
+  </div>
+  <div class="form">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username">
+
+    <label for="month">Month:</label>
+    <select id="month" name="month">
+      <option value="">All</option>
+      <option value="1">January</option>
+      <option value="2">February</option>
+      <option value="3">March</option>
+      <option value="4">April</option>
+      <option value="5">May</option>
+      <option value="6">June</option>
+      <option value="7">July</option>
+      <option value="8">August</option>
+      <option value="9">September</option>
+      <option value="10">October</option>
+      <option value="11">November</option>
+      <option value="12">December</option>
+    </select>
+
+    <label for="year">Year:</label>
+    <select id="year" name="year">
+      <option value="<%= currentYear %>">
+        <%= currentYear %>
+      </option>
+      <option value="<%= lastYear %>">
+        <%= lastYear %>
+      </option>
+    </select>
+
+    <label for="status">Status:</label>
+    <select id="status" name="status">
+      <option value="">All</option>
+      <option value="Absent">Absent</option>
+      <option value="Present">Present</option>
+      <option value="Present - PunchOut Missed">Present - PunchOut Missed</option>
+    </select>
+
+    <label for="isMobile">Is Mobile:</label>
+    <select id="isMobile" name="isMobile">
+      <option value="">All</option>
+      <option value="true">Yes</option>
+      <option value="false">No</option>
+    </select>
+
+
+    <button onclick="getTimeLogs();" type="button">Filter</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Start Date</th>
+        <th>Start Time</th>
+        <th>End Date</th>
+        <th>End Time</th>
+        <th>Total Mins</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+     
+    </tbody>
+  </table>
+  <script>
+
+    var userName = localStorage.getItem('un');
+    var password = localStorage.getItem('pw');
+    var displayName = document.getElementById('displayName');
+    displayName.innerText = userName;
+    function getTimeLogs() {
+      var username = document.getElementById('username');
+      var month = document.getElementById('month');
+      var year = document.getElementById('year');
+      var isMobile = document.getElementById('isMobile');
+      var status = document.getElementById('status');
+      var element = document.getElementById('message');
+      if (userName && password) {
+        let url = '/viewlogs?username=' + username.value + '&month=' + month.value + '&year=' + year.value + '&isMobile=' + isMobile.value+ '&status=' + status.value;
+        fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(async response => {
+            var data = await response.json();
+            if (response.ok) {
+              const tbody = document.getElementById('table-body');
+              tbody.innerText = '';
+              for (let i = 0; i < data.length; i++) {
+                // Create a new row
+                const newRow = document.createElement('tr');
+
+                // Create cells and set their content
+                const cell1 = document.createElement('td');
+                cell1.textContent = data[i].username;
+
+                const cell2 = document.createElement('td');
+                cell2.textContent = data[i].startDate;
+
+                const cell3 = document.createElement('td');
+                cell3.textContent = data[i].startTime;
+
+                const cell4 = document.createElement('td');
+                cell4.textContent = data[i].endDate;
+
+                const cell5 = document.createElement('td');
+                cell5.textContent = data[i].endTime;
+
+                const cell6 = document.createElement('td');
+                cell6.textContent = data[i].mins;
+                const cell7 = document.createElement('td');
+                cell7.textContent = data[i].status;
+
+                // Append cells to the row
+                newRow.appendChild(cell1);
+                newRow.appendChild(cell2);
+                newRow.appendChild(cell3);
+                newRow.appendChild(cell4);
+                newRow.appendChild(cell5);
+                newRow.appendChild(cell6);
+                newRow.appendChild(cell7);
+                // Append the row to the tbody
+                tbody.appendChild(newRow);
+              }
+
+            }
+            else {
+              alert(data.error);
+              return false;
+            }
+          })
+          .catch(error => {
+            element.innerText = 'Error in login!';
+            console.log('Error capturing time log:', error);
+          });
+      }
+      else {
+        window.location.href = '/';
+      }
+    }
+    function back() {
+            window.location.href = '/timeinfo';
+        }
+  </script>
+</body>
+
+</html>

@@ -1,6 +1,24 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const cron = require('node-cron');
+// Schedule the cron job to run every day at 7:00 PM (19:00)
+const job = cron.schedule('23 15 * * 1-5', () => {
+    // This function will be executed when the cron job runs
+    console.log('Cron job running at 3:00 PM');
+
+    // add absent row who actully didn't mark attendance or not apply for leave
+    addAbsentRow();
+
+
+}, {
+    scheduled: true,
+    timezone: 'Asia/Kolkata' // Replace with your desired timezone
+});
+
+
+
+
 
 // Create the Express app
 const app = express();
@@ -40,10 +58,12 @@ app.post('/apply-leave', (req, res) => {
             reason
         } = req.body;
 
+        let start = new Date(startDate);
+        let end = new Date(endDate);
         let now = new Date();
         const month = now.getMonth() + 1;
         const year = now.getFullYear();
-        const filename = `leave_${year}_${month}.json`;
+        const filename = `timelogs_${year}_${month}.json`;
         const filePath = path.join(__dirname, filename);
         let timeLogs = [];
         if (fs.existsSync(filePath)) {
@@ -52,13 +72,32 @@ app.post('/apply-leave', (req, res) => {
         } else {
             fs.writeFileSync(filePath, JSON.stringify(timeLogs));
         }
+
+        const formattedStartDate = start.toLocaleDateString('en-IN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: '2-digit',
+        });
+
+        const formattedEndDate = end.toLocaleDateString('en-IN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: '2-digit',
+        });
+
+
         const timeLog = {
-            employeeId,
+            username: employeeId,
+            wishType: "Morning",
+            mins: 0,
             leaveType,
-            startDate,
-            endDate,
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+            sTime: now,
+            eTime: now,
             days,
-            reason
+            reason,
+            status: 'Absent'
         };
 
         timeLogs.push(timeLog);
@@ -91,7 +130,7 @@ app.post('/timelogdetail', (req, res) => {
         let now = new Date();
         const month = now.getMonth() + 1;
         const year = now.getFullYear();
-        const filename = `timelogs_${year}_${month}_1.json`;
+        const filename = `timelogs_${year}_${month}.json`;
         const filePath = path.join(__dirname, filename);
         let timeLogs = [];
         if (fs.existsSync(filePath)) {
@@ -109,6 +148,66 @@ app.post('/timelogdetail', (req, res) => {
     }
 });
 
+app.get('/logs', (req, res) => {
+    const currentYear = new Date().getFullYear();
+    const lastYear = currentYear - 1;
+    // Render the EJS template with the required variables
+    res.render('viewlogs', { currentYear, lastYear });
+})
+
+// API endpoint to get filtered time log records
+app.get('/viewlogs', (req, res) => {
+    const { username, month, year, isMobile, wishType, status } = req.query;
+    if (!month)
+        month = now.getMonth() + 1;
+    if (!year)
+        year = now.getFullYear();
+    const filename = `timelogs_${year}_${month}.json`;
+    const filePath = path.join(__dirname, filename);
+    let timeLogs = [];
+    if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath, 'utf8');
+        timeLogs = JSON.parse(fileContent);
+    } else {
+        fs.writeFileSync(filePath, JSON.stringify(timeLogs));
+    }
+    // Filter the time log records based on the provided filters
+    let filteredLogs = timeLogs;
+    console.log(filteredLogs);
+
+    if (username) {
+        filteredLogs = filteredLogs.filter(log => log.username.trim().toLowerCase() === username.trim().toLowerCase());
+    }
+
+    if (month) {
+        filteredLogs = filteredLogs.filter(log => {
+            const logMonth = new Date(log.sTime).getMonth() + 1;
+            return logMonth === Number(month);
+        });
+    }
+
+    if (year) {
+        filteredLogs = filteredLogs.filter(log => {
+            const logYear = new Date(log.sTime).getFullYear();
+            return logYear === Number(year);
+        });
+    }
+
+    if (isMobile) {
+        filteredLogs = filteredLogs.filter(log => log.isMobile === (isMobile === true));
+    }
+
+    if (wishType) {
+        filteredLogs = filteredLogs.filter(log => log.wishType === wishType);
+    }
+    if (status) {
+        filteredLogs = filteredLogs.filter(log => log.status === status);
+    }
+
+    // Send the filtered time log records as the response
+    res.json(filteredLogs);
+});
+
 // Endpoint to capture time log
 app.post('/timelog', async (req, res) => {
     let errorLogs = [];
@@ -124,6 +223,9 @@ app.post('/timelog', async (req, res) => {
 
         // Get the current date in yyyy-mm-dd format
         let now = new Date();
+        // Adjust the date to Kolkata time
+        now.setUTCHours(now.getUTCHours() + 5); // Add 5 hours
+        now.setUTCMinutes(now.getUTCMinutes() + 30); // Add 30 minutes
         const month = now.getMonth() + 1;
         const year = now.getFullYear();
 
@@ -163,7 +265,7 @@ app.post('/timelog', async (req, res) => {
 
         // Load existing time log entries or create a new file if it doesn't exist
 
-        const filename = `timelogs_${year}_${month}_1.json`;
+        const filename = `timelogs_${year}_${month}.json`;
         const filePath = path.join(__dirname, filename);
 
         let timeLogs = [];
@@ -174,9 +276,7 @@ app.post('/timelog', async (req, res) => {
             fs.writeFileSync(filePath, JSON.stringify(timeLogs));
         }
 
-        // Adjust the date to Kolkata time
-        now.setUTCHours(now.getUTCHours() + 5); // Add 5 hours
-        now.setUTCMinutes(now.getUTCMinutes() + 30); // Add 30 minutes
+
 
         // Format the adjusted date in dd-mm-yy HH:mm format
         const formattedDate = now.toLocaleDateString('en-IN', {
@@ -189,10 +289,6 @@ app.post('/timelog', async (req, res) => {
             hour: '2-digit',
             minute: '2-digit',
         });
-
-
-
-
 
 
         // Check if already an entry for start today for same user
@@ -217,9 +313,6 @@ app.post('/timelog', async (req, res) => {
             res.status(403).send('Error: Firstly, You need to ClockIn!');
             return;
         }
-
-
-
 
         // Concatenate the formatted date and time
         // const formattedDateTime = `${formattedDate} ${formattedTime}`;
@@ -278,8 +371,67 @@ app.get('/download/:filename', (req, res) => {
     });
 });
 
+
+const addAbsentRow = () => {
+    const employeesFilePath = path.join(__dirname, 'employees.json');
+    const employeesData = fs.readFileSync(employeesFilePath, 'utf8');
+    const employees = JSON.parse(employeesData);
+
+    const now = new Date();
+    // Adjust the date to Kolkata time
+    now.setUTCHours(now.getUTCHours() + 5); // Add 5 hours
+    now.setUTCMinutes(now.getUTCMinutes() + 30); // Add 30 minutes
+
+    // Format the adjusted date in dd-mm-yy HH:mm format
+    const formattedDate = now.toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+    });
+
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear();
+    const filename = `timelogs_${year}_${month}.json`;
+    const filePath = path.join(__dirname, filename);
+
+    let timeLogs = [];
+    if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath, 'utf8');
+        timeLogs = JSON.parse(fileContent);
+    } else {
+        fs.writeFileSync(filePath, JSON.stringify(timeLogs));
+    }
+
+
+    for (let i = 0; i < employees.length; i++) {
+        const ifTodayDataExist = timeLogs.find(tl => tl.username == employees[i].name && tl.startDate === formattedDate);
+        if (!ifTodayDataExist) {
+            const timeLog = {
+                username: employees[i].name,
+                wishType: "Morning",
+                mins: 0,
+                leaveType: 'Casual',
+                startDate: formattedDate,
+                endDate: formattedDate,
+                sTime: now,
+                eTime: now,
+                days: 1,
+                reason: "Automatic added",
+                status: 'Absent'
+            };
+
+            timeLogs.push(timeLog);
+        }
+    }
+    // Save the time log entries to the JSON file
+    fs.writeFileSync(filePath, JSON.stringify(timeLogs, null, 2));
+}
+
 // Start the server
 var port = process.env.PORT || 8080;
 app.listen(port, () => {
     console.log('Server listening on port ' + port);
 });
+
+// Start the cron job
+job.start();

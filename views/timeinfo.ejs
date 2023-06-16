@@ -167,6 +167,7 @@
                     <th>End Date</th>
                     <th>End Time</th>
                     <th>Mins</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody id="table-body"></tbody>
@@ -234,6 +235,8 @@
 
                                 const cell6 = document.createElement('td');
                                 cell6.textContent = data[i].mins;
+                                const cell7 = document.createElement('td');
+                                cell7.textContent = data[i].status;
 
                                 // Append cells to the row
                                 newRow.appendChild(cell1);
@@ -242,6 +245,7 @@
                                 newRow.appendChild(cell4);
                                 newRow.appendChild(cell5);
                                 newRow.appendChild(cell6);
+                                newRow.appendChild(cell7);
                                 // Append the row to the tbody
                                 tbody.appendChild(newRow);
                             }
@@ -307,7 +311,7 @@
                     console.log('Error capturing time log:', error);
                 });
         }
-
+       
 
     </script>
 </body>
