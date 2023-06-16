@@ -117,13 +117,13 @@
       "isMobile": false,
       "startDate": "16/06/23",
       "startTime": "09:28 am",
-      "endDate": null,
-      "endTime": null,
-      "wishType": "Morning",
+      "endDate": "16/06/23",
+      "endTime": "06:00 pm",
+      "wishType": "Evening",
       "sTime": "2023-06-16T09:28:53.058Z",
-      "eTime": null,
-      "mins": 0,
-      "status": "Present - PunchOut Missed"
+      "eTime": "2023-06-16T18:00:33.610Z",
+      "mins": 511,
+      "status": "Present"
     },
     {
       "username": "Reena",
@@ -131,13 +131,13 @@
       "isMobile": false,
       "startDate": "16/06/23",
       "startTime": "09:28 am",
-      "endDate": null,
-      "endTime": null,
-      "wishType": "Morning",
+      "endDate": "16/06/23",
+      "endTime": "06:00 pm",
+      "wishType": "Evening",
       "sTime": "2023-06-16T09:28:53.058Z",
-      "eTime": null,
-      "mins": 0,
-      "status": "Present - PunchOut Missed"
+      "eTime": "2023-06-16T18:00:55.436Z",
+      "mins": 512,
+      "status": "Present"
     },
     {
       "username": "ManpreetK",
@@ -145,13 +145,13 @@
       "isMobile": false,
       "startDate": "16/06/23",
       "startTime": "09:28 am",
-      "endDate": null,
-      "endTime": null,
-      "wishType": "Morning",
+      "endDate": "16/06/23",
+      "endTime": "06:00 pm",
+      "wishType": "Evening",
       "sTime": "2023-06-16T09:28:53.058Z",
-      "eTime": null,
-      "mins": 0,
-      "status": "Present - PunchOut Missed"
+      "eTime": "2023-06-16T18:00:17.838Z",
+      "mins": 511,
+      "status": "Present"
     },
     {
       "username": "Priya",
@@ -159,13 +159,13 @@
       "isMobile": false,
       "startDate": "16/06/23",
       "startTime": "09:28 am",
-      "endDate": null,
-      "endTime": null,
-      "wishType": "Morning",
+      "endDate": "16/06/23",
+      "endTime": "06:00 pm",
+      "wishType": "Evening",
       "sTime": "2023-06-16T09:28:53.058Z",
-      "eTime": null,
-      "mins": 0,
-      "status": "Present - PunchOut Missed"
+      "eTime": "2023-06-16T18:00:28.179Z",
+      "mins": 511,
+      "status": "Present"
     },
     {
       "username": "Amandeep",
@@ -173,13 +173,13 @@
       "isMobile": false,
       "startDate": "16/06/23",
       "startTime": "09:28 am",
-      "endDate": null,
-      "endTime": null,
-      "wishType": "Morning",
+      "endDate": "16/06/23",
+      "endTime": "06:00 pm",
+      "wishType": "Evening",
       "sTime": "2023-06-16T09:28:53.058Z",
-      "eTime": null,
-      "mins": 0,
-      "status": "Present - PunchOut Missed"
+      "eTime": "2023-06-16T18:00:35.158Z",
+      "mins": 511,
+      "status": "Present"
     },
     {
       "username": "Radha",
@@ -187,13 +187,13 @@
       "isMobile": false,
       "startDate": "16/06/23",
       "startTime": "09:28 am",
-      "endDate": null,
-      "endTime": null,
-      "wishType": "Morning",
-      "sTime": "22023-06-16T09:28:53.058Z",
-      "eTime": null,
-      "mins": 0,
-      "status": "Present - PunchOut Missed"
+      "endDate": "16/06/23",
+      "endTime": "06:00 pm",
+      "wishType": "Evening",
+      "sTime": "2023-06-16T09:28:53.058Z",
+      "eTime": "2023-06-16T18:00:21.637Z",
+      "mins": 511,
+      "status": "Present"
     },
     {
       "username": "Navjot",
@@ -201,13 +201,13 @@
       "isMobile": false,
       "startDate": "16/06/23",
       "startTime": "09:28 am",
-      "endDate": null,
-      "endTime": null,
-      "wishType": "Morning",
+      "endDate": "16/06/23",
+      "endTime": "06:00 pm",
+      "wishType": "Evening",
       "sTime": "2023-06-16T09:28:53.058Z",
-      "eTime": null,
-      "mins": 0,
-      "status": "Present - PunchOut Missed"
+      "eTime": "2023-06-16T18:00:14.048Z",
+      "mins": 511,
+      "status": "Present"
     },
     {
       "username": "Sarmistha",
@@ -215,12 +215,12 @@
       "isMobile": false,
       "startDate": "16/06/23",
       "startTime": "09:28 am",
-      "endDate": null,
-      "endTime": null,
-      "wishType": "Morning",
+      "endDate": "16/06/23",
+      "endTime": "06:00 pm",
+      "wishType": "Evening",
       "sTime": "2023-06-16T09:28:53.058Z",
-      "eTime": null,
-      "mins": 0,
-      "status": "Present - PunchOut Missed"
+      "eTime": "2023-06-16T18:00:55.782Z",
+      "mins": 512,
+      "status": "Present"
     }
   ]

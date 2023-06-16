@@ -151,7 +151,8 @@ app.get('/logs', (req, res) => {
 
 // API endpoint to get filtered time log records
 app.get('/viewlogs', (req, res) => {
-    const { username, month, year, isMobile, wishType, status } = req.query;
+    let { username, month, year, isMobile, wishType, status } = req.query;
+    let now = new Date();
     if (!month)
         month = now.getMonth() + 1;
     if (!year)
